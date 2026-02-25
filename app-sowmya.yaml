@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sowmya
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Sowmyakakarlamudi/isolated-app-gitops.git
+    targetRevision: main
+    path: isolated-app
+    helm:
+      parameters:
+        - name: namespace
+          value: sowmya
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sowmya
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
